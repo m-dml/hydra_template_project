@@ -30,3 +30,10 @@ class FullyConnected:
     num_classes: Any = None
     normalize: bool = False
     bias_in_last_layer: bool = True
+
+
+@dataclass
+class MySimpleModelLib:
+    _target_: str = "src.models.my_simple_model.MySimpleModel"
+    input_channels: int = 1
+    num_classes: int = 10

@@ -1,0 +1,37 @@
+# @package _global_
+
+defaults:
+  - override /lightning_module: default
+  - override /datamodule: mnist
+  - override /datamodule/dataset: mnist
+  - override /loss: nll_loss
+  - override /datamodule/train_transforms: no_transforms
+  - override /datamodule/valid_transforms: no_transforms
+  - override /model: my_simple_model
+  - override /optimizer: sgd
+  - override /loss: nll_loss
+  - override /strategy: null
+  - override /logger/tensorboard: tensorboard
+  - override /callbacks/checkpoint: model_checkpoint
+  - override /callbacks/early_stopping: early_stopping
+  - override /callbacks/lr_monitor: lr_monitor
+
+  - override /hydra/launcher: local
+  - _self_
+
+output_dir_base_path: ./outputs
+random_seed: 7
+print_config: true
+log_level: "info"
+
+trainer:
+  fast_dev_run: false
+  num_sanity_val_steps: 3
+  max_epochs: 3
+  gpus: 0
+  limit_train_batches: 3
+  limit_val_batches: 3
+
+datamodule:
+  num_workers: 0
+  batch_size: 4
