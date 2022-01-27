@@ -3,18 +3,18 @@ Template for creating projects with pytorch-lightning and hydra.
 
 
 # How to use this template?
-Create your own project on GitHub with this template by clicking the 
+Create your own project on GitHub with this template by clicking the
 [Use this template](https://github.com/m-dml/hydra_template_project/generate) button.
 
 You now have to only add your own dataloader, dataset, model, optimizer and loss and you should be ready to go.
 To see if you have all modules installed and everything works fine, you should run the unit tests!
 
 # How to add my own module?
-For this tutorial it is expected that you already know pytorch (and best also some pytorch-lightning). If you don't 
+For this tutorial it is expected that you already know pytorch (and best also some pytorch-lightning). If you don't
 know hydra that should be fine, but definitely check out [their docs](https://hydra.cc/).
 
-Lets explore how to use hydra and this template by showcasing how one would add a simple own CNN to this repo. 
-For the tests I used MNIST as dataset so we will just continue using that. But if you know how to write a 
+Lets explore how to use hydra and this template by showcasing how one would add a simple own CNN to this repo.
+For the tests I used MNIST as dataset so we will just continue using that. But if you know how to write a
 pytorch-lightning Dataloader and a torch Dataset it should be just as easy to replace them after this small tutorial.
 
 To add our own model we have to do the following steps:
@@ -22,7 +22,7 @@ To add our own model we have to do the following steps:
 2. Add the model in the hydra config library by adding it to the `src/lib/model.py` file.
 3. Register the model in the hydra global-config-register by following the pattern in `src/lib/config.py` and creating
 a new entry there.
-4. (Optional) Create a `yaml` file for the model. This makes sense if the model is used with a lot of different 
+4. (Optional) Create a `yaml` file for the model. This makes sense if the model is used with a lot of different
 settings. So we can give those settings individual names, which makes them easier to call.
 5. Add an experiment using that model
 
@@ -47,7 +47,7 @@ class MySimpleModel(nn.Module):
         # still 14x14
         # We will again use maxpool so now it is 7x7
         self.fully_connected = nn.Linear(16 * 7 * 7, num_classes, bias=True)
-    
+
     def forward(self, x):
         x = self.conv1(x)
         x = self.max_pool(x)
@@ -112,18 +112,18 @@ num_classes: 10
 input_channels: 1
 ````
 
-If you want, you can of course drop the comments. 
+If you want, you can of course drop the comments.
 
 Why did we create this config file? Lets say you would like to also have t he same model, but with 3 input channels when
-you do predictions on colored images. All you would have to do is either change the value `input_channels: 3` of the 
-file `conf/model/my_simple_model.yaml`. But if you want to give it a distiguishable name (which makes sense for more 
+you do predictions on colored images. All you would have to do is either change the value `input_channels: 3` of the
+file `conf/model/my_simple_model.yaml`. But if you want to give it a distiguishable name (which makes sense for more
 complex usecases) then you can just create another file `conf/model/my_simple_model_rgb.yaml` for example, which has
-the content 
+the content
 
 ```yaml
 defaults:
-  - my_simple_model_base 
-  - _self_  
+  - my_simple_model_base
+  - _self_
 
 num_classes: 10
 input_channels: 3  # <- this is the only thing that changed
@@ -154,7 +154,7 @@ python main.py model=my_simple_model_base model.input_channels=3
 ```
 
 2. We can create an experiment using this model. This definitely is preferable when the setups get more complex.
-For this, we have to create a new yaml file in the experiment folder. So lets create the file 
+For this, we have to create a new yaml file in the experiment folder. So lets create the file
 `conf/experiment/my_simple_model_experiment.yaml` with the following content:
 
 

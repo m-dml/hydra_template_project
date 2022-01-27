@@ -9,11 +9,10 @@ from src.lib.datamodule import MNISTDataLoader, MNISTDataset
 from src.lib.lightning_module import LitModule
 from src.lib.logger import MLFlowLogger, TensorBoardLogger, TestTubeLogger
 from src.lib.loss import NLLLoss
-from src.lib.model import CustomResnet, FullyConnected, ResNet
+from src.lib.model import CustomResnet, FullyConnected, MySimpleModelLib, ResNet
 from src.lib.optimizer import LARS, SGD, Adam, RMSprop
 from src.lib.pl_plugins import DDPPlugin, SingleDevicePlugin
 from src.lib.trainer import Trainer
-from src.lib.model import MySimpleModelLib
 
 
 def register_configs() -> None:

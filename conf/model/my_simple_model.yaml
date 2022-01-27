@@ -1,6 +1,6 @@
 defaults:
-  - my_simple_model_base  # this is the name of the registered model that we would like to extend
-  - _self_  # adding this BELOW!! the registered name means, that everything in this yaml file will override the defaults
+  - my_simple_model_base # this is the name of the registered model that we would like to extend
+  - _self_ # adding this BELOW!! the registered name means, that everything in this yaml file will override the defaults
 
 # you can only specify values here that are also in the registered model (src/lib/model/MySimpleModelLib)
 num_classes: 10
