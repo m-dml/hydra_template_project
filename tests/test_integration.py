@@ -1,3 +1,5 @@
+import os
+import shutil
 import unittest
 
 import hydra
@@ -8,8 +10,6 @@ from hydra.core.global_hydra import GlobalHydra
 
 from main import inner_main
 from src.lib.config import register_configs
-import os
-import shutil
 
 
 class TestIntegration(unittest.TestCase):

@@ -26,7 +26,7 @@ output_dir_base_path: ./outputs
 
 logger:
   tensorboard:
-    save_dir:  ${output_dir_base_path}/tensorboard/
+    save_dir: ${output_dir_base_path}/tensorboard/
     default_hp_metric: False # important to be False, when we want to use own hp_metrics
 
 hydra:
