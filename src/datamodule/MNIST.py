@@ -42,20 +42,14 @@ class MNISTDataLoader(pl.LightningDataModule):
     def setup(self, stage=None):
 
         if stage == "fit" or stage is None:
-            self.train_data: Dataset = instantiate(
-                self.cfg_dataset, transform=self.train_transforms, train=True
-            )
+            self.train_data: Dataset = instantiate(self.cfg_dataset, transform=self.train_transforms, train=True)
             logging.debug(f"Number of training samples: {len(self.train_data)}")
 
-            self.valid_data: Dataset = instantiate(
-                self.cfg_dataset, transform=self.val_transforms, train=False
-            )
+            self.valid_data: Dataset = instantiate(self.cfg_dataset, transform=self.val_transforms, train=False)
             logging.debug(f"Number of validation samples: {len(self.valid_data)}")
 
         if stage == "test" or stage is None:
-            self.test_data: Dataset = instantiate(
-                self.cfg_dataset, transform=self.val_transforms, train=False
-            )
+            self.test_data: Dataset = instantiate(self.cfg_dataset, transform=self.val_transforms, train=False)
 
     def train_dataloader(self):
         return DataLoader(

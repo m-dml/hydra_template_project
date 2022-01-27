@@ -21,11 +21,10 @@ def register_configs() -> None:
     cs.store(name="base_lightning_module", node=LitModule, group="lightning_module")
 
     # the model:
-    feature_extractor_group = "model/feature_extractor"
-    cs.store(name="resnet_base", node=ResNet, group=feature_extractor_group)
-    cs.store(name="custom_resnet_base", node=CustomResnet, group=feature_extractor_group)
-
-    cs.store(name="fully_connected_base", node=FullyConnected, group="model/fully_connected_base")
+    model_group = "model"
+    cs.store(name="resnet_base", node=ResNet, group=model_group)
+    cs.store(name="custom_resnet_base", node=CustomResnet, group=model_group)
+    cs.store(name="fully_connected_base", node=FullyConnected, group=model_group)
 
     # data:
     cs.store(name="mnist_datamodule_base", node=MNISTDataLoader, group="datamodule")

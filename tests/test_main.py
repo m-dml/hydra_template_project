@@ -1,5 +1,8 @@
-import unittest
 import logging
+import os
+import time
+import unittest
+
 import hydra
 import numpy as np
 import pytorch_lightning as pl
@@ -7,7 +10,7 @@ import torch
 
 from src.lib.config import register_configs
 from src.utils import utils
-import os
+
 
 class TestMainFile(unittest.TestCase):
     @classmethod
@@ -33,38 +36,41 @@ class TestMainFile(unittest.TestCase):
         )
 
         cls.test_log_file = "test.log"
+        if os.path.isfile(cls.test_log_file):
+            time.sleep(2)
+            os.remove(cls.test_log_file)
 
     @classmethod
     def tearDownClass(cls):
         if os.path.isfile(cls.test_log_file):
+            time.sleep(2)
             os.remove(cls.test_log_file)
 
     def test_utils_logging(self):
-        utils.set_log_levels("debug")
-        logger = utils.get_logger()
+        def _test_log(level="debug"):
+            utils.set_log_levels(level)
+            logger = utils.get_logger()
 
-        fh = logging.FileHandler(self.test_log_file)
-        logger.addHandler(fh)
+            fh = logging.FileHandler(self.test_log_file)
+            logger.addHandler(fh)
 
-        logger.error("Test Error")
-        logger.debug("Test Debug")
+            logger.error("Test Error")
+            logger.warning("Test Warning")
+            logger.info("Test Info")
+            logger.debug("Test Debug")
 
-        with open(self.test_log_file, "r") as f:
-            content = f.readlines()
+            with open(self.test_log_file, "r") as f:
+                content = f.readlines()
 
-        self.assertEqual(len(content), 2)
+            print("content ", content)
+            handlers = logger.handlers[:]
+            for handler in handlers:
+                handler.close()
+                logger.removeHandler(handler)
+            os.remove(self.test_log_file)
+            return content
 
-        utils.set_log_levels("info")
-        logger = utils.get_logger()
-
-        fh = logging.FileHandler(self.test_log_file)
-        logger.addHandler(fh)
-
-        logger.error("Test Error")
-        logger.debug("Test Debug")
-
-        with open(self.test_log_file, "r") as f:
-            content = f.readlines()
-
-        self.assertEqual(len(content), 1)
-
+        self.assertEqual(len(_test_log(level="debug")), 4)
+        self.assertEqual(len(_test_log(level="info")), 3)
+        self.assertEqual(len(_test_log(level="warning")), 2)
+        self.assertEqual(len(_test_log(level="error")), 1)

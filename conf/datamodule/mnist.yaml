@@ -1,6 +1,6 @@
 defaults:
   - mnist_datamodule_base
-  - dataset: mnist_cifar10
+  - dataset: mnist
 
 batch_size: 16
 num_workers: 0
