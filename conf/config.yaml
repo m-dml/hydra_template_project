@@ -1,0 +1,36 @@
+defaults:
+  - base_config
+  - lightning_module: default
+  - datamodule: mnist
+  - datamodule/train_transforms: default
+  - datamodule/valid_transforms: default
+  - model: resnet
+  - trainer: default
+  - optimizer: adam
+  - loss: nll_loss
+  - strategy: null
+  - logger/tensorboard: tensorboard
+  - callbacks/checkpoint: model_checkpoint
+  - callbacks/early_stopping: early_stopping
+  - callbacks/lr_monitor: lr_monitor
+
+  - override hydra/launcher: local
+
+  # enable color logging
+  - override hydra/hydra_logging: colorlog
+  - override hydra/job_logging: colorlog
+
+  - _self_ # should be last in defaults list to override everything in structured config with here defined values
+
+output_dir_base_path: ./outputs
+
+logger:
+  tensorboard:
+    default_hp_metric: False # important to be False, when we want to use own hp_metrics
+
+hydra:
+  sweep:
+    dir: ${output_dir_base_path}/multirun/${now:%Y-%m-%d}/${now:%H-%M-%S}
+    subdir: ${hydra.job.num}
+  run:
+    dir: ${output_dir_base_path}/outputs/${now:%Y-%m-%d}/${now:%H-%M-%S}

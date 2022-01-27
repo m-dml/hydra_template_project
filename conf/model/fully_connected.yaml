@@ -1,0 +1,8 @@
+defaults:
+  - fully_connected_base
+  - _self_
+
+hidden_layers: [200,200]
+input_features: 2048
+activation:
+  _target_: torch.nn.ReLU

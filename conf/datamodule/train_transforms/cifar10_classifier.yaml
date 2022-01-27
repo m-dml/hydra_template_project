@@ -1,0 +1,9 @@
+_target_: torchvision.transforms.Compose
+
+transforms:
+  - _target_: torchvision.transforms.RandomVerticalFlip
+
+  - _target_: torchvision.transforms.RandomRotation
+    degrees: 360
+
+  - _target_: torchvision.transforms.ToTensor

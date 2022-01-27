@@ -1,0 +1,29 @@
+# @package hydra.launcher
+defaults:
+  - submitit_slurm
+  - _self_
+
+timeout_min: 1440 # maximum time for the job in minutes
+cpus_per_task: ${datamodule.num_workers}
+tasks_per_node: 4 # == gpus_per_node
+nodes: ${trainer.num_nodes}
+name: ${hydra.job.name}
+_target_: hydra_plugins.hydra_submitit_launcher.submitit_launcher.SlurmLauncher
+partition: booster
+gres: gpu:4
+signal_delay_s: 120
+additional_parameters:
+  {
+    exclusive: true,
+    signal: "SIGUSR1@200",
+    account: "hai_emulator",
+    contiguous: true,
+  }
+array_parallelism: 256
+setup: [
+    "conda activate hydra",
+    "export CUDA_VISIBLE_DEVICES=0,1,2,3",
+    "export NCCL_NSOCKS_PERTHREAD=4", # number sockets opened by each helper CPU
+    "export NCCL_SOCKET_NTHREADS=2",
+  ] # number of CPUs per NCCL connection
+max_num_timeout: 10

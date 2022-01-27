@@ -1,0 +1,5 @@
+defaults:
+  - mnist_base
+  - _self_
+
+root: ${datamodule.data_base_path} # path where to save downloaded data

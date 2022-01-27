@@ -1,0 +1,10 @@
+defaults:
+  - mnist_datamodule_base
+  - dataset: mnist_cifar10
+
+batch_size: 16
+num_workers: 0
+shuffle_train_dataset: true
+shuffle_validation_dataset: false
+shuffle_test_dataset: false
+data_base_path: data/

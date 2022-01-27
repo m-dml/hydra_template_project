@@ -1,0 +1,43 @@
+name: hydratorch
+
+channels:
+  - conda-forge
+  - pytorch
+
+dependencies:
+  - python=3.8
+  - pip
+  - cudatoolkit
+  - pytorch
+  - pre-commit
+  - black
+  - isort
+  - flake8
+  - tensorboard
+  - torchvision
+  - pytorch-lightning
+  - torchmetrics
+  - matplotlib
+  - ipython
+  - libgcc
+  - hydra-core
+  - jupyterlab
+  - scikit-learn
+  - rich
+  - pandas
+  - dask
+  - distributed
+  - numpy
+  - seaborn
+  - python-dotenv
+  - onnx
+  - pillow
+  - tqdm
+  - pip:
+      - onnxruntime
+      - hydra-colorlog
+      - hydra-optuna-sweeper
+      - hydra-submitit-launcher
+      - test-tube
+      - fairscale
+      - https://github.com/ufoym/imbalanced-dataset-sampler/archive/master.zip # torchsampler

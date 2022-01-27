@@ -1,0 +1,9 @@
+_target_: torchvision.transforms.Compose
+
+transforms:
+  - _target_: src.utils.SquarePadTransform.SquarePad
+
+  - _target_: torchvision.transforms.Resize
+    size: [520, 520]
+
+  - _target_: torchvision.transforms.ToTensor

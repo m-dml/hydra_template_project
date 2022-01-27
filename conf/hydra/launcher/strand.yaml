@@ -1,0 +1,22 @@
+# @package hydra.launcher
+defaults:
+  - submitit_slurm
+  - _self_
+
+timeout_min: 4320 # maximum time for the job in minutes
+cpus_per_task: ${datamodule.num_workers}
+tasks_per_node: ${trainer.gpus} # == gpus_per_node
+nodes: ${trainer.num_nodes}
+name: ${hydra.job.name}
+_target_: hydra_plugins.hydra_submitit_launcher.submitit_launcher.SlurmLauncher
+partition: p2GPU32
+signal_delay_s: 120
+additional_parameters: { exclusive: true, signal: "SIGUSR1@90" }
+array_parallelism: 256
+setup: [
+    "source activate hydra",
+    "export CUDA_VISIBLE_DEVICES=0,1",
+    "export NCCL_NSOCKS_PERTHREAD=4", # number sockets opened by each helper CPU
+    "export NCCL_SOCKET_NTHREADS=2", # number of CPUs per NCCL connection
+  ]
+max_num_timeout: 10

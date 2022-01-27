@@ -1,0 +1,24 @@
+_target_: torchvision.transforms.Compose
+
+transforms:
+  - _target_: torchvision.transforms.RandomResizedCrop
+    size:
+      - 224
+      - 224
+
+  - _target_: torchvision.transforms.RandomHorizontalFlip
+    p: 0.5
+
+  - _target_: torchvision.transforms.RandomApply
+    transforms:
+      - _target_: torchvision.transforms.ColorJitter
+        brightness: 0.4
+        contrast: 0.4
+        saturation: 0.4
+        hue: 0.1
+    p: 0.8
+
+  - _target_: torchvision.transforms.RandomGrayscale
+    p: 0.2
+
+  - _target_: torchvision.transforms.ToTensor
