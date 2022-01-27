@@ -37,5 +37,10 @@ hydra:
     dir: ${output_dir_base_path}/outputs/${now:%Y-%m-%d}/${now:%H-%M-%S}
 
 callbacks:
+  early_stopping:
+    monitor: "hp/loss"
+    mode: "min"
   checkpoint:
     dirpath: ${output_dir_base_path}/checkpoints/
+    monitor: "hp/loss"
+    mode: "min"
