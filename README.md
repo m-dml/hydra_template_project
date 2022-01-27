@@ -1,4 +1,4 @@
-# hydra_template_project
+# Hydra Lightning Template for Structured Configs
 Template for creating projects with pytorch-lightning and hydra.
 
 
