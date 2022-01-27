@@ -12,8 +12,6 @@ from src.utils import utils
 class LightningModel(pl.LightningModule):
     def __init__(
         self,
-        class_labels,
-        all_labels,
         example_input_array,
         optimizer,
         scheduler,
@@ -32,15 +30,10 @@ class LightningModel(pl.LightningModule):
         self.save_hyperparameters(ignore=["example_input_array", "all_labels"])
 
         self.example_input_array = example_input_array
-        self.class_labels = class_labels
-        self.all_labels = all_labels
         self.loss_func = hydra.utils.instantiate(self.cfg_loss)
 
         self.model: nn.Module = hydra.utils.instantiate(model)
-        self.temperatures = None
 
-        self.confusion_matrix = dict()
-        self._init_accuracy_matrices()
         self.console_logger = utils.get_logger("LightningBaseModel")
         self.console_logger.debug("Test Debug Message")
         self.batch_size = batch_size
@@ -112,7 +105,7 @@ class LightningModel(pl.LightningModule):
         return {"loss": loss}
 
     def do_step(self, batch):
-        inputs, labels = self._pre_process_batch(batch)
+        inputs, labels = batch
         predictions = self(inputs)
         loss = self.loss_func(predictions, labels)
         return predictions, loss
@@ -125,18 +118,13 @@ class LightningModel(pl.LightningModule):
         if self.automatic_optimization and (self.current_epoch == 0):
             return
 
-        if self.is_in_simclr_mode:
-            example_input = self.example_input_array[0]
-        else:
-            example_input = self.example_input_array
-
         # save model to onnx:
         folder = self.trainer.checkpoint_callback.dirpath
         onnx_file_generator = os.path.join(folder, f"model_{self.global_step}.onnx")
 
         torch.onnx.export(
             model=self.model.to(self.device),
-            args=example_input.to(self.device),
+            args=self.example_input_array.to(self.device),
             f=onnx_file_generator,
             opset_version=13,
             do_constant_folding=True,
@@ -153,6 +141,3 @@ class LightningModel(pl.LightningModule):
         # save the feature_extractor_weights:
         state_dict = self.model.state_dict()
         torch.save(state_dict, os.path.join(folder, f"complete_model_{self.global_step}.weights"))
-
-        if self.temperature_scale:
-            torch.save(self.temperatures, os.path.join(folder, f"temperatures_{self.global_step}.tensor"))

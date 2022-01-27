@@ -1,0 +1,13 @@
+defaults:
+  - custom_resnet_base
+  - _self_
+
+model:
+  _target_: "torchvision.models.resnet18"
+  num_classes: 10 # has to be 1000 for pretrained model
+  pretrained: false
+
+kernel_size: 3
+stride: 2
+channels: 1
+maxpool1: false

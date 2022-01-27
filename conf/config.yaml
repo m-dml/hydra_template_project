@@ -26,6 +26,7 @@ output_dir_base_path: ./outputs
 
 logger:
   tensorboard:
+    save_dir:  ${output_dir_base_path}/tensorboard/
     default_hp_metric: False # important to be False, when we want to use own hp_metrics
 
 hydra:
@@ -34,3 +35,7 @@ hydra:
     subdir: ${hydra.job.num}
   run:
     dir: ${output_dir_base_path}/outputs/${now:%Y-%m-%d}/${now:%H-%M-%S}
+
+callbacks:
+  checkpoint:
+    dirpath: ${output_dir_base_path}/checkpoints/

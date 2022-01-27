@@ -1,0 +1,59 @@
+# @package _global_
+
+defaults:
+  - override /lightning_module: default
+  - override /datamodule: mnist
+  - override /datamodule/dataset: mnist
+  - override /loss: nll_loss
+  - override /datamodule/train_transforms: no_transforms
+  - override /datamodule/valid_transforms: no_transforms
+  - override /model: custom_resnet
+  - override /optimizer: adam
+  - override /loss: nll_loss
+  - override /strategy: null
+  - override /logger/tensorboard: tensorboard
+  - override /callbacks/checkpoint: model_checkpoint
+  - override /callbacks/early_stopping: early_stopping
+  - override /callbacks/lr_monitor: lr_monitor
+
+  - override /hydra/launcher: local
+  - _self_
+
+load_state_dict: null
+output_dir_base_path: ./outputs
+scheduler: null
+random_seed: 7
+print_config: false
+debug: false
+ignore_warnings: false
+auto_tune: false # if true runs trainer.tune() before trainer.fit()
+log_level: "info"
+
+# set the size of the feature vector for the contrastive loss to be compared:
+model:
+  model:
+    num_classes: 10
+
+trainer:
+  fast_dev_run: false
+  num_sanity_val_steps: 3
+  max_epochs: 3
+  gpus: 0
+  limit_train_batches: 3
+  limit_val_batches: 3
+
+logger:
+  tensorboard:
+    default_hp_metric: False
+
+datamodule:
+  num_workers: 0
+  batch_size: 4
+
+callbacks:
+  early_stopping:
+    monitor: "hp/loss"
+    mode: "min"
+  checkpoint:
+    monitor: "hp/loss"
+    mode: "min"

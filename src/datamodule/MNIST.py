@@ -33,7 +33,7 @@ class MNISTDataLoader(pl.LightningDataModule):
         self.num_workers = num_workers
 
         self.train_transforms = train_transforms
-        self.valid_transforms = valid_transforms
+        self.val_transforms = valid_transforms
         self.shuffle_train_dataset = shuffle_train_dataset
         self.shuffle_valid_dataset = shuffle_valid_dataset
         self.shuffle_test_dataset = shuffle_test_dataset

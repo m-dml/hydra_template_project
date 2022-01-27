@@ -20,7 +20,7 @@ class MNISTDataset:
 
 @dataclass
 class MNISTDataLoader(ParentDataloader):
-    _target_: str = "src.datamodule.CIFAR10.CIFAR10DataLoader"
+    _target_: str = "src.datamodule.MNIST.MNISTDataLoader"
     _recursive_: bool = False
 
     dataset: Any = MISSING

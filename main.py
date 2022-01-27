@@ -46,6 +46,11 @@ register_configs()
 
 @hydra.main(config_name="config", config_path="conf")
 def main(cfg: Config):
+    # for integration tests main is splitted, so that there exists a not decorated version.
+    return inner_main(cfg)
+
+
+def inner_main(cfg: Config):
     utils.extras(cfg)  # check if debug is activated and if so, change some trainer settings
     utils.set_log_levels(cfg.log_level)
     log = utils.get_logger(cfg.log_level)
@@ -90,16 +95,11 @@ def main(cfg: Config):
     datamodule.setup()  # manually set up the datamodule here, so an example batch can be drawn
 
     # generate example input array:
-    for batch in datamodule.val_dataloader():
+    for batch in datamodule.train_dataloader():
         example_input, _ = batch
-        if isinstance(example_input, (tuple, list)):
-            example_input = torch.stack(example_input).detach().cpu()
         break
 
     log.info(f"Size of one batch is: {example_input.element_size() * example_input.nelement() / 2**20} mb")
-
-    is_in_simclr_mode = example_input.shape[0] == 2  # if first dimension is 2, then it is in simclr mode -> True
-    log.info(f"Model is in simclr mode?: <{is_in_simclr_mode}>")
 
     # Init Lightning model
     log.info(f"Instantiating model <{cfg.lightning_module._target_}>")
@@ -107,13 +107,9 @@ def main(cfg: Config):
         cfg.lightning_module,
         optimizer=cfg.optimizer,
         scheduler=cfg.scheduler,
-        feature_extractor=cfg.model.feature_extractor,
-        classifier=cfg.model.classifier,
+        model=cfg.model,
         loss=cfg.loss,
-        class_labels=datamodule.unique_labels,
-        all_labels=datamodule.all_labels,
         example_input_array=example_input.detach().cpu(),
-        is_in_simclr_mode=is_in_simclr_mode,
         batch_size=cfg.datamodule.batch_size,
     )
 
