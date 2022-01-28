@@ -1,6 +1,6 @@
 # Hydra Lightning Template for Structured Configs
 Template for creating projects with pytorch-lightning and hydra.
-
+What is different to https://github.com/ashleve/lightning-hydra-template ? Some ideas are taken from there, but the big difference is that my template uses structured configs.
 
 # How to use this template?
 Create your own project on GitHub with this template by clicking the
