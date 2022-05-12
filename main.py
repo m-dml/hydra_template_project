@@ -114,7 +114,7 @@ def inner_main(cfg: Config):
     )
 
     # load the state dict if one is provided (has to be provided for finetuning classifier in simclr):
-    device = "cuda" if cfg.trainer.gpus > 0 else "cpu"
+    device = "cuda" if cfg.trainer.accelerator == "gpu" else "cpu"
     if cfg.load_state_dict is not None:
         log.info(f"Loading model weights from {cfg.load_state_dict}")
         net = copy.deepcopy(model.model.cpu())

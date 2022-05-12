@@ -38,7 +38,6 @@ trainer:
   fast_dev_run: false
   num_sanity_val_steps: 3
   max_epochs: 3
-  gpus: 0
   limit_train_batches: 3
   limit_val_batches: 3
 

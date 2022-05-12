@@ -10,10 +10,7 @@ class Trainer:
     gradient_clip_val: float = 0.0
     process_position: int = 0
     num_nodes: int = 1
-    num_processes: int = 1
-    gpus: int = 0
-    auto_select_gpus: bool = False
-    tpu_cores: Any = None
+    auto_select_gpus: bool = True
     enable_progress_bar: bool = True
     overfit_batches: float = 0.0
     track_grad_norm: int = -1
@@ -38,7 +35,6 @@ class Trainer:
     profiler: Any = None
     benchmark: bool = False
     deterministic: bool = False
-    reload_dataloaders_every_epoch: bool = False
     auto_lr_find: bool = False
     replace_sampler_ddp: bool = True
     detect_anomaly: bool = True
@@ -47,3 +43,5 @@ class Trainer:
     amp_backend: str = "native"
     amp_level: Any = None
     move_metrics_to_cpu: bool = False
+    accelerator: Any = None
+    devices: Any = None

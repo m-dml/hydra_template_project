@@ -2,7 +2,8 @@ defaults:
   - base_trainer
   - _self_
 
-gpus: 1
+accelerator: cpu
+devices: 1
 num_nodes: ${hydra.launcher.nodes}
 min_epochs: 5
 max_epochs: 20

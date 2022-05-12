@@ -2,4 +2,5 @@ defaults:
   - base_trainer
   - _self_
 
-gpus: 0
+accelerator: cpu
+devices: 1
