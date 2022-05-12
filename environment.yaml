@@ -1,4 +1,4 @@
-name: hydratorch
+name: hydra-torch
 
 channels:
   - conda-forge
@@ -7,7 +7,7 @@ channels:
 dependencies:
   - python=3.8
   - pip
-  - cudatoolkit
+#  - cudatoolkit
   - pytorch
   - pre-commit
   - black
@@ -40,4 +40,5 @@ dependencies:
       - hydra-submitit-launcher
       - test-tube
       - fairscale
+      - lightning-bolts
       - https://github.com/ufoym/imbalanced-dataset-sampler/archive/master.zip # torchsampler
